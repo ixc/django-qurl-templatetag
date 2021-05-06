@@ -1,5 +1,6 @@
 import django
 from django.utils import six
+from django.utils.encoding import smart_str
 
 if six.PY3:
     from urllib.parse import urlparse, parse_qsl, urlunparse, urlencode
@@ -24,7 +25,7 @@ class Qurl(object):
 
     def __init__(self, url):
         self.url = url
-        self._qsl = parse_qsl(urlparse(url).query)
+        self._qsl = parse_qsl(urlparse(smart_str(url)).query)  # urllib.urlencode does not support unicode
 
     def set(self, name, value):
         """ Assign a value, remove if it's None """
